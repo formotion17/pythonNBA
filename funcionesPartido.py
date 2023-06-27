@@ -15,16 +15,15 @@ import  controllerPartido       as      obj
 import  controllerJugador       as      objJugador
 import  controllerStatNormales  as      cuarto
 import  controllerCartaTiro     as      tiro
-import  controllerCuarto        as      cuar
-from NBA.controllerJugador import jugador
+import  controllerCuarto        as      cuar 
 
 
 ############################################################################
 ####  CLASE DONDE TENDREMOS LAS FUNCIONES PARA DESGRANAR LOS PARTIDOS   ####
 ############################################################################
 
-reload(sys)
-sys.setdefaultencoding('utf8')
+#reload(sys)
+#sys.setdefaultencoding('utf8')
 
 
 #################################################################
@@ -285,12 +284,12 @@ def devolverStadisticasNormalesJugadores(equipo, pagina):
                             jugando.boxscore("Total Partido")
                             
                             if len(nombreJugador)==1:
-                                print campo
+                                print (campo)
                                 attribute = campo.find('th').attrs['csk']
                                 buscandoNombre = str(attribute).split(",")
                                 jugando.nombre = devolverCorrecto(buscandoNombre[1])
                                 jugando.apellido = devolverCorrecto(buscandoNombre[0])
-                                print nombreJugador
+                                print (nombreJugador)
 
                             if len(nombreJugador) == 2:
                                 jugando.nombre = nombreJugador[0]
@@ -1133,8 +1132,8 @@ def actividadPartido(texto, jugadoresPartido, cuarto, otrosJugadores, primerEqui
                     elif '(kicked ball':
                         jugadoresPartido[posicion].estadisticasCuarto[cuarto].perdidaPie += 1
                     else:
-                        print 'HEMOS ENCONTRADO OTRO TIPO DE PERDIDAS'
-                        print texto
+                        print ('HEMOS ENCONTRADO OTRO TIPO DE PERDIDAS')
+                        print (texto)
 
         #########################################
         # #    FALTA                            ##
@@ -1282,8 +1281,8 @@ def actividadPartido(texto, jugadoresPartido, cuarto, otrosJugadores, primerEqui
                         jugadoresPartido[posicion].estadisticasCuarto[cuarto].faltaTecnica += 1
                         jugadoresPartido[posicion].estadisticasCuarto[cuarto].faltasPersonales += 1
     except IndexError:
-        print parte
-        print 'Fuera de Rango'
+        print (parte)
+        print ('Fuera de Rango')
 
 
 #########################################################################################
@@ -1587,7 +1586,7 @@ def devolverMasMenosJugadores(partido, soup):
     for div in soup.select(selector):
         divisor = str(div).split('\n')
         numeroCuartos = len(divisor) - 2
-    print '    Número de cuartos jugados: ' + str(numeroCuartos)
+    print ('    Número de cuartos jugados: ' + str(numeroCuartos))
     partido.numeroCuartos = numeroCuartos
 
     selector = '.player'
@@ -1605,7 +1604,7 @@ def devolverMasMenosJugadores(partido, soup):
             listaJugadores.append(div.text.split(' ')[0] + ' ' + div.text.split(' ')[1] + ' ' + div.text.split(' ')[2] + ' ' + div.text.split(' ')[3])
         contador += 1
 
-    cuartoActual = 0
+    global cuartoActual
     selector = '.player-plusminus'
     contador = 0
     primerCuarto = 0
@@ -1625,7 +1624,7 @@ def devolverMasMenosJugadores(partido, soup):
             i = i.replace(' ', '').replace('\n', '')
             if i != '':
                 if '+' in i or '-' in i or '0' == i:
-                    global cuartoActual
+                    #global cuartoActual
                     if numeroCuartos == 4:
                         devolverCuarto(sumatorioAncho)
                     elif numeroCuartos == 5:
@@ -1657,6 +1656,7 @@ def devolverMasMenosJugadores(partido, soup):
                     # print 'Ancho: '+i+' px'
                     sumatorioAncho += int(i)
         contador += 1
+        
         total = primerCuarto + segundoCuarto + tercerCuarto + cuartoCuarto + primerProrroga + segundaProrroga + terceraProrroga + cuartaProrroga
         # print '1º Cuarto:   ' + str(primerCuarto)
         player.cuarto1.masMenos = primerCuarto
@@ -1697,7 +1697,7 @@ def devolverMasMenosJugadores(partido, soup):
 def devolverJugadorMasMenos(local, visitante, jugador):
     #print "BUSCANDO: " + jugador
     if "Nene" in jugador:
-        print "paramos"
+        print ("paramos")
         jugador = "Nene Hilario"
         for i in local:
             if i.id in "hilarne01":
@@ -1710,11 +1710,11 @@ def devolverJugadorMasMenos(local, visitante, jugador):
                 i.apellido = "Hilario"
                 
     if "Jeffery Taylor" in jugador:
-        print "paramos"
+        print ("paramos")
         jugador = "Jeff Taylor"
         
     if "Gigi" in jugador:
-        print "paramos"
+        print ("paramos")
             
     if "Jr." in jugador:
         jugador = jugador[0:-4]

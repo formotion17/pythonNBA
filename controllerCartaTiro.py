@@ -1,19 +1,4 @@
 class tiros:
-    #     #CARTA DE TIRO
-
-    #     cuarto              =    ""
-    #     tiempoRestante      =    ""     #MIRAR SI PODEMOS CONSEGUIRLO EN SEGUNDOS
-
-    #     posicionTop         =    0
-    #     posicionLeft        =    0
-
-    #     jugador             =    ""
-
-    #     dentro              =    False
-    #     tipoCanasta         =    ""  #DOS PUNTOS O TRES PUNTOS
-    #     distancia           =    0
-    #     equipo              =    ""
-    #     tanteo              =    "" #TANTEO SEPARADO POR '-' PARA PODER OBTENER
 
     def meterCuarto(self, cuarto):
         self.cuarto = cuarto
@@ -44,7 +29,7 @@ class tiros:
         self.situacionAntes = situacion
 
     def meterSituacionDespues(self, situacion):
-       self.situacionDespues = situacion
+        self.situacionDespues = situacion
 
     def meterTipoCuarto(self, cuarto):
         self.cuarto = self.cuarto + " " + cuarto

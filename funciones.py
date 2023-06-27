@@ -4,11 +4,12 @@
 from        time             import      time
 from        bs4              import      BeautifulSoup
 import      time             as          reloj
-import      urllib
+import      urllib.request
 import      os
 import      random
 import      re
 import      constantes
+from asyncio.tasks import sleep
 
 
 ############################################################################
@@ -43,7 +44,9 @@ def devolverPaginaMasMenos(urlPagina):
 ##  DEVOLVEMOS EL TIPO DE PARSEO QUE QUEREMOS PARA LA PAGINA
 ##  EN ESTE CASO DE TIPO HTML
 def devolverPaginaParse(urlPagina):
-    page = urllib.urlopen(urlPagina)
+    page = urllib.request.urlopen(urlPagina)
+    if page.status_code == 429:
+        time.sleep(2)
     return BeautifulSoup(page,"html.parser")
 
 ##  DEVOLVEMOS EL TIPO DE PARSEO QUE QUEREMOS PARA LA PAGINA
@@ -143,10 +146,8 @@ def crearPDFBoxscorePartido(partido,t,d):
     c.drawString(150,200,"Merry had a little lamb")
     c.save()
     
-def esPartidoPlayIn(dia,mes,year):
-    if year == 2021 and mes == 5 and (dia == 18 or dia == 19 or dia == 20 or dia == 21):
-        return True
-    if year == 2020 and mes == 8 and dia == 15:
+def esPartidoPlayIn(titulo):
+    if "Play-In" in titulo:
         return True
     
     return False

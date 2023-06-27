@@ -18,18 +18,17 @@ import controllerPartido as obj
 import controllerStatNormales as statNormal
 import funciones
 import funcionesPartido
-import request
 import time as reloj
 
 ############################################################################
 ####   PERMITE CAMBIAR DEL ASCII PREDETERMINADO A OTRAS CODIFICACIONES  ####
 ############################################################################
-reload(sys)
-sys.setdefaultencoding('utf-8')
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
 
 
 def devolverPaginaDescargada(year, tipo, numero):
-    page = open("NBADATA/" + str(year) + "-" + str(year + 1) + "/" + str(numero) + "." + tipo + ".html", "r")
+    page = open("/Users/formotion/tfg/python/DATA/DOWNLOADED PAGES/" + str(year) + "-" + str(year + 1) + "/" + str(numero) + "." + tipo + ".html", "r")
     return BeautifulSoup(page, "html.parser")
 
 def contarArvhicosEnCarpeta(ruta):
@@ -39,7 +38,7 @@ def contarArvhicosEnCarpeta(ruta):
     for elemento in contenido:
         num_archivos += 1
         
-    return num_archivos/4
+    return int(num_archivos/4)
 
 
 
@@ -100,7 +99,7 @@ for year in range(constantes.TEMPORADA_INICIAL, constantes.TEMPORADA_FINAL):
 
     
     ##  BUCLE PARA IR RECORRIENDO LOS PARTIDOS DE LA TEMPORADA
-    for archivo in range(1, contarArvhicosEnCarpeta("NBADATA/" + str(year) + "-" + str(year + 1))+1):
+    for archivo in range(1231, contarArvhicosEnCarpeta("/Users/formotion/tfg/python/DATA/DOWNLOADED PAGES/" + str(year) + "-" + str(year + 1))+1):
 
         ##  SUMAMOS AL NUMERO DE PARTIDOS QUE VAMOS REGISTRANDO
         numeroPartidosRegistrados += 1
@@ -111,7 +110,8 @@ for year in range(constantes.TEMPORADA_INICIAL, constantes.TEMPORADA_FINAL):
         boxScoreGame = devolverPaginaDescargada(year, 'a', archivo)
     
         ##  SACAMOS POR PANTALLA EL TITULO DE LA PAGINA EN LA QUE ESTAMOS NAVEGANDO
-        print boxScoreGame.title.text
+        titulo = boxScoreGame.title.text
+        print (titulo)
         
         # Encontrar el elemento contenedor para obtener dia y mes
         scorebox_meta = boxScoreGame.find('div', class_='scorebox_meta')
@@ -119,12 +119,12 @@ for year in range(constantes.TEMPORADA_INICIAL, constantes.TEMPORADA_FINAL):
         dia = scorebox_meta.find('div').text.split(',')[1].strip().split(' ') [1]
         mes = devolverMes(scorebox_meta.find('div').text.split(',')[1].strip().split(' ') [0])
         
-        print "    Partidos de temporada: " + str(numeroPartidosTemporada) + ". Numero de partidos total descargados: " + str(numeroPartidosRegistrados)
+        print ("    Partidos de temporada: " + str(numeroPartidosTemporada) + ". Numero de partidos total descargados: " + str(numeroPartidosRegistrados))
     
         ############################################################################
         ####  ESTAMOS EN LA P�GINA PRINCIPAL DEL BOXSCORE                       ####
         ############################################################################
-        print "    ENTRAMOS EN LA P�GINA PRINCIPAL DEL BOXSCORE"
+        print ("    ENTRAMOS EN LA P�GINA PRINCIPAL DEL BOXSCORE")
     
         ##  CREAMOS LA VARIABLE DE PARTIDO
         partido = obj.partido()
@@ -148,9 +148,10 @@ for year in range(constantes.TEMPORADA_INICIAL, constantes.TEMPORADA_FINAL):
             #   TANTEO LOCAL Y VISITANTE
             #   BALANCE DE VITORIAS Y DERROTAS  DE LOCAL Y VISITANTE
             contador = 0
-            playIn = funciones.esPartidoPlayIn(dia, mes, funciones.devolverAnioCorrecto(year, mes))
+            playIn = funciones.esPartidoPlayIn(titulo)
             if playIn:
-                print "    ES PARTIDO DE PLAY IN"
+                partido.playIn=True
+                print ("    ES PARTIDO DE PLAY IN")
                 for resultado in stats.findAll('div'):
                     ##  RECOGEMOS EL TANTEO DEL EQUIPO VISITANTE
                     if contador == 4:
@@ -222,13 +223,44 @@ for year in range(constantes.TEMPORADA_INICIAL, constantes.TEMPORADA_FINAL):
                 else:
                     if int(partido.equipoLocal.victorias) + int(partido.equipoLocal.derrotas) <= 7:
                         partido.playOff = True
+                        
+                        if "First Round" in titulo:
+                            if "Western" in titulo:
+                                partido.conferencia="oeste"
+                            else:
+                                partido.conferencia="este"
+                            partido.bracket="Conference First Round"
+                            partido.game=int(titulo.split(" ")[7].replace(":",""))
+                            
+                        elif "Semifinals" in titulo:
+                            partido.bracket="Conference Semifinals"
+                            if "Western" in titulo:
+                                partido.conferencia="oeste"
+                            else:
+                                partido.conferencia="este"
+                            partido.game=int(titulo.split(" ")[6].replace(":",""))    
+                                
+                        elif "Conference Finals" in titulo:
+                            if "Western" in titulo:
+                                partido.conferencia="oeste"
+                            else:
+                                partido.conferencia="este"
+                            partido.bracket="Conference Finals"
+                            partido.game=int(titulo.split(" ")[6].replace(":",""))
+                            
+                        else:
+                            partido.bracket="NBA Finals"
+                            partido.game=int(titulo.split(" ")[4].replace(":",""))
+                        
+                        
+                        
                     else:
                         partido.playOff = False
             else:
                 partido.playOff = False
     
-            print "    "+partido.equipoVisitante.nombre + " " + str(partido.equipoVisitante.tanteo) + " - " + str(partido.equipoLocal.tanteo) + " " + partido.equipoLocal.nombre
-            print "    Patido de PlayOff: " + str(partido.playOff)
+            print ("    "+partido.equipoVisitante.nombre + " " + str(partido.equipoVisitante.tanteo) + " - " + str(partido.equipoLocal.tanteo) + " " + partido.equipoLocal.nombre)
+            print ("    Patido de PlayOff: " + str(partido.playOff))
     
             ## RECOGEMOS LAS ESTADISTICAS NORMALES  DE LOS JUGADORES DEL PARTIDO DE LA PAGINA DE BOXSCORE
             partido.equipoLocal = funcionesPartido.devolverStadisticasNormalesJugadores(partido.equipoLocal, boxScoreGame)
@@ -243,7 +275,7 @@ for year in range(constantes.TEMPORADA_INICIAL, constantes.TEMPORADA_FINAL):
         ####  ESTADISTICAS POR CUARTO DE CADA EQUIPO                            ####
         ############################################################################
     
-        print "    ENTRAMOS EN LA P�GINA DE JUGADA A JUGADA"
+        print ("    ENTRAMOS EN LA P�GINA DE JUGADA A JUGADA")
     
         ## RECOGEMOS Y PARSEAMOS LA PAGINA DE PLAY BY PLAY DEL PARTIDO
         playbyplay = devolverPaginaDescargada(year, 'b', archivo)
@@ -262,7 +294,7 @@ for year in range(constantes.TEMPORADA_INICIAL, constantes.TEMPORADA_FINAL):
         ####  CARTA DE TIRO DE CADA JUGADOR DE CADA EQUIPO                      ####
         ############################################################################
     
-        print "    ENTRAMOS EN LA P�GINA DE CARTA DE TIRO"
+        print ("    ENTRAMOS EN LA P�GINA DE CARTA DE TIRO")
     
         ## RECOGEMOS Y PARSEAMO S LA PAGINA DE CARTA DE TIROS DEL PARTIDO
         shootChart = devolverPaginaDescargada(year, 'c', archivo)
@@ -283,7 +315,7 @@ for year in range(constantes.TEMPORADA_INICIAL, constantes.TEMPORADA_FINAL):
         ####  +/- POR CUARTO DE CADA JUGADOR EN CADA CUARTO                     ####
         ############################################################################
     
-        print "    ENTRAMOS EN LA P�GINA DE +/-"
+        print ("    ENTRAMOS EN LA P�GINA DE +/-")
     
         ## RECOGEMOS Y PARSEAMOS LA PAGINA DE MAS MENOS DEL PARTIDO
         masMenosPagina = devolverPaginaDescargada(year, 'd', archivo)
@@ -322,6 +354,6 @@ for year in range(constantes.TEMPORADA_INICIAL, constantes.TEMPORADA_FINAL):
         partidoUnico.write(partido.toJSON())
         partidoUnico.close()
     
-        print "Fin del partido partido"
-        print "********************************************************"
-        print " "
+        print ("Fin del partido partido")
+        print ("********************************************************")
+        print (" ")

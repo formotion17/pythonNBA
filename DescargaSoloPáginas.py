@@ -11,7 +11,7 @@ import random
 import re
 import sys
 from time import time
-import urllib
+import urllib.request
 
 from bs4 import BeautifulSoup
 import constantes
@@ -19,16 +19,16 @@ import controllerPartido as obj
 import controllerStatNormales as statNormal
 import funciones
 import funcionesPartido
-import request
+#import request
 import time as reloj
-from PIL.Image import BOX
+#from PIL.Image import BOX
 
 
 ############################################################################
 ####   PERMITE CAMBIAR DEL ASCII PREDETERMINADO A OTRAS CODIFICACIONES  ####
 ############################################################################
-reload(sys)
-sys.setdefaultencoding('utf-8')
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
 
 ############################################################################
 ####   FUNCIONES                                                        ####
@@ -90,7 +90,7 @@ for year in range(constantes.TEMPORADA_INICIAL,constantes.TEMPORADA_FINAL):
         ##  BUCLE PARA IR RECCORIENDO LOS DIAS DEL MES
         for dia in range(1, 32):
             
-            print constantes.URL_BASKETBALL_REFERENCES_BOXSCORES +"?month=" + str(mes) +"&day=" + str(dia) +"&year=" + str(funciones.devolverAnioCorrecto(year,mes))
+            print (constantes.URL_BASKETBALL_REFERENCES_BOXSCORES +"?month=" + str(mes) +"&day=" + str(dia) +"&year=" + str(funciones.devolverAnioCorrecto(year,mes)))
 
             ##  RECOGEMOS LA P�GINA DEL DIA SE�ALADO
             partidosDelDia = funciones.devolverPaginaParse(
@@ -109,7 +109,7 @@ for year in range(constantes.TEMPORADA_INICIAL,constantes.TEMPORADA_FINAL):
 
             ##  RECORREMOS, SI HAY, LOS ENLACES LOS PARTIDOS JUGADOS ESE D�A
             for matchDayUrl in partidosDelDia.findAll('td', {"class": "right gamelink"}):
-                print matchDayUrl
+                print (matchDayUrl)
 
                 ##  SUMAMOS AL N�MERO DE PARTIDOS QUE VAMOS REGISTRANDO
                 numeroPartidosRegistrados   += 1
@@ -142,7 +142,7 @@ for year in range(constantes.TEMPORADA_INICIAL,constantes.TEMPORADA_FINAL):
                 sumatorioRestaDeSegundos += rn
                 reloj.sleep(rn)
 
-                print "ENTRAMOS EN LA P�GINA DE JUGADA A JUGADA"
+                print ("ENTRAMOS EN LA P�GINA DE JUGADA A JUGADA")
 
                 ## RECOGEMOS Y PARSEAMOS LA PAGINA DE PLAY BY PLAY DEL PARTIDO
                 playbyplay = funciones.devolverPaginaPlayByPlay(matchDayUrl)
@@ -165,7 +165,7 @@ for year in range(constantes.TEMPORADA_INICIAL,constantes.TEMPORADA_FINAL):
                 sumatorioRestaDeSegundos += rn
                 reloj.sleep(rn)
 
-                print "ENTRAMOS EN LA P�GINA DE CARTA DE TIRO"
+                print ("ENTRAMOS EN LA P�GINA DE CARTA DE TIRO")
 
                 ## RECOGEMOS Y PARSEAMO S LA PAGINA DE CARTA DE TIROS DEL PARTIDO
                 shootChart = funciones.devolverPaginaCartaTiro(matchDayUrl)
@@ -188,7 +188,7 @@ for year in range(constantes.TEMPORADA_INICIAL,constantes.TEMPORADA_FINAL):
                 sumatorioRestaDeSegundos += rn
                 reloj.sleep(rn)
 
-                print "ENTRAMOS EN LA P�GINA DE +/-"
+                print ("ENTRAMOS EN LA P�GINA DE +/-")
 
                 ## RECOGEMOS Y PARSEAMOS LA PAGINA DE MAS MENOS DEL PARTIDO
                 masMenosPagina = funciones.devolverPaginaMasMenos(matchDayUrl)
@@ -201,6 +201,6 @@ for year in range(constantes.TEMPORADA_INICIAL,constantes.TEMPORADA_FINAL):
                 ##  ESCIBIR EN TXT LA PAGINA DEL PARTIDO MAS/MENOS
                 escribirArchivoTxt(masMenosPagina)
 
-                print "Fin del partido partido"
-                print "********************************************************"
-                print " "
+                print ("Fin del partido partido")
+                print ("********************************************************")
+                print (" ")

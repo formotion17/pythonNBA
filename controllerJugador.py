@@ -1,29 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from bs4 import BeautifulSoup
-import urllib
-import os
-import re
-import funciones
-import constantes
+
 import controllerStatNormales    as cuarto
 import controllerStatAvanzadas    as avanzadas
 
 
 class jugador:
-    # PERFIL
     id = ""
     nombre = ""
     apellido = ""
     inicio = False
     segundos = 0
-    # ESTADISTICAS
-    # estadisticaPartido    =    controllerStatNormales.statNormal()
-    # estadisticaCuarto        =    []    #controllerStatNormales.statNormal()
-    # estadisticaAnazada    =    controllerStatAvanzadas.statAvanzada()
-    # masMenosTotal            =    []
-    # cartaTiros            =    []
     totalPartido = cuarto
     cuarto1 = cuarto
 
