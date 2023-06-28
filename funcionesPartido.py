@@ -1695,7 +1695,7 @@ def devolverMasMenosJugadores(partido, soup):
 ####  FUNCION QUE BUSCA EL JUGADOR             ####
 ###################################################
 def devolverJugadorMasMenos(local, visitante, jugador):
-    #print "BUSCANDO: " + jugador
+    print("BUSCANDO: " + jugador)
     if "Nene" in jugador:
         print ("paramos")
         jugador = "Nene Hilario"
@@ -1731,7 +1731,7 @@ def devolverJugadorMasMenos(local, visitante, jugador):
 
     # print jugador
     if " Mbenga" in jugador:
-        jugador = "Didier Ilunga-Mbenga"
+        jugador = jugador
     elif jugador == "Tim Hardaway Jr.":
         jugador = "Tim Hardaway"
     elif jugador == "Glenn Robinson III":
@@ -1760,8 +1760,8 @@ def devolverJugadorMasMenos(local, visitante, jugador):
         # jugador = "Vitor Faverani"
     elif jugador == "Xavier Tillman Sr.":
         jugador = "Xavier Tillman"
-    elif jugador == "Didi Louzada":
-        jugador = "Marcos Louzada Silva"
+    #elif jugador == "Didi Louzada":
+        #jugador = "Marcos Louzada Silva"
     elif jugador == "Aleksandar Djordjevic":
         jugador = "Aleksandar Dordevic";
     elif jugador == "Kiwane Lemorris Garris":

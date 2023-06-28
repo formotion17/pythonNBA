@@ -99,7 +99,7 @@ for year in range(constantes.TEMPORADA_INICIAL, constantes.TEMPORADA_FINAL):
 
     
     ##  BUCLE PARA IR RECORRIENDO LOS PARTIDOS DE LA TEMPORADA
-    for archivo in range(1231, contarArvhicosEnCarpeta("/Users/formotion/tfg/python/DATA/DOWNLOADED PAGES/" + str(year) + "-" + str(year + 1))+1):
+    for archivo in range(1, contarArvhicosEnCarpeta("/Users/formotion/tfg/python/DATA/DOWNLOADED PAGES/" + str(year) + "-" + str(year + 1))+1):
 
         ##  SUMAMOS AL NUMERO DE PARTIDOS QUE VAMOS REGISTRANDO
         numeroPartidosRegistrados += 1
