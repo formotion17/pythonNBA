@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding/DescargaSoloP\u00E1ginas.py=utf-8
 encoding/TratarArchivosDescargados.py=utf-8
+encoding/TratarArchivosDescargadosJugadasPartidos.py=utf-8
 encoding/constantes.py=utf-8
 encoding/controllerCuarto.py=utf-8
 encoding/controllerEquipo.py=utf-8

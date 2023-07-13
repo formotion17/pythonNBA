@@ -622,7 +622,95 @@ def completarCartaTiro(jugadores):
                 tiro.meterSituacionAntes("GANANDO")
      
      
-    return jugadores           
+    return jugadores     
+
+def devolverTanteoPartido(pagina):  
+    contador="A"
+    seguir = False
+    save = ""
+    marcador=[]
+    for link in pagina.find_all('td'):
+        particion = link.text
+
+        if ("12:00.0" not in particion and "Start" not in particion and "Jump" not in particion and "End" not in particion and "1st" not in particion and "2nd" not in particion and "3rd" not in particion and "4th" not in particion)\
+                or (seguir == True)\
+                or("12:00.0" in save and "Start" not in particion and "Jump" not in particion and "End" not in particion and "1st" not in particion and "2nd" not in particion and "3rd" not in particion and "4th" not in particion):
+            if contador == "A":
+                contador = "B"
+            elif contador == "B":
+                contador = "C"
+            elif contador == "C":
+                contador = "D"
+            elif contador == "D":
+                marcador.append(particion)
+                contador = "E"
+            elif contador == "E":
+                contador = "F"
+            elif contador == "F":
+                contador = "A"
+        else:
+            contador="A"
+
+        if "Start" in particion or "Jump" in particion:
+            contador = "A"
+            seguir = True
+        else:
+            seguir = False
+
+        if "1st" in particion:
+            if "overtime" in particion and "End" not in particion:
+                cuarto = 4
+                # print "EMPIEZA PRIMERA PRORROGA"
+            else:
+                contador="A"
+
+        if "2nd" in particion:
+            if "quarter" in particion and "End" not in particion:
+                cuarto = 1
+                # print "EMPIEZA SEGUNDO CUARTO"
+            elif "overtime" in particion and "End" not in particion:
+                cuarto = 5
+            else:
+                contador="A"
+                # print "EMPIEZA SEGUNDA PRORROGA"
+
+        if "3rd" in particion:
+            if "quarter" in particion and "End" not in particion:
+                cuarto = 2
+                # print "EMPIEZA TERCER CUARTO"
+            elif "overtime" in particion and "End" not in particion:
+                cuarto = 6
+            else:
+                contador="A"
+                # print "EMPIEZA TERCERA PRORROGA"
+
+        if "4th" in particion:
+            if "quarter" in particion and "End" not in particion:
+                cuarto = 3
+                # print "EMPIEZA CUARTO CUARTO"
+            elif "overtime" in particion and "End" not in particion:
+                cuarto = 7
+            else:
+                contador="A"
+                # print "EMPIEZA CUARTA PRORROGA"
+
+        if "5th" in particion:
+            if "overtime" in particion and "End" not in particion:
+                cuarto = 8
+            else:
+                contador="A"
+                # print "EMPIEZA QUINTA PRORROGA"
+
+        if "6th" in particion:
+            if "overtime" in particion and "End" not in particion:
+                cuarto = 9
+            else:
+                contador="A"
+                # print "EMPIEZA SEXTA PRORROGA"
+        if '12:00.0' in particion:
+            save = particion
+            contador = "B"
+    return marcador
 
 
 #################################################################################################

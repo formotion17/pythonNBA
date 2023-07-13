@@ -168,15 +168,49 @@ for matchDayUrl in partidosDelDia.findAll('td', {"class": "right gamelink"}):
         #   DESDE EL MES 10 11 12 1 2 3 NUNCA VA A SER PLAYOFF
         #   SI ESTAMOS EN MESES 4 5 6 7 Y SI EL NÚMERO ES MENOR O IGUAL A 7, ESTAMOS EN PLAYOFF
         if mes > 3 and mes < 10:
-            if int(partido.equipoLocal.victorias) + int(partido.equipoLocal.derrotas) <= 7:
-                partido.playOff = True
+                if playIn:
+                    partido.playOff = False
+                else:
+                    if int(partido.equipoLocal.victorias) + int(partido.equipoLocal.derrotas) <= 7:
+                        partido.playOff = True
+                        
+                        if "First Round" in titulo:
+                            if "Western" in titulo:
+                                partido.conferencia="oeste"
+                            else:
+                                partido.conferencia="este"
+                            partido.bracket="Conference First Round"
+                            partido.game=int(titulo.split(" ")[7].replace(":",""))
+                            
+                        elif "Semifinals" in titulo:
+                            partido.bracket="Conference Semifinals"
+                            if "Western" in titulo:
+                                partido.conferencia="oeste"
+                            else:
+                                partido.conferencia="este"
+                            partido.game=int(titulo.split(" ")[6].replace(":",""))    
+                                
+                        elif "Conference Finals" in titulo:
+                            if "Western" in titulo:
+                                partido.conferencia="oeste"
+                            else:
+                                partido.conferencia="este"
+                            partido.bracket="Conference Finals"
+                            partido.game=int(titulo.split(" ")[6].replace(":",""))
+                            
+                        else:
+                            partido.bracket="NBA Finals"
+                            partido.game=int(titulo.split(" ")[4].replace(":",""))
+                        
+                        
+                        
+                    else:
+                        partido.playOff = False
             else:
                 partido.playOff = False
-        else:
-            partido.playOff = False
-        print (partido.equipoVisitante.nombre + " " + str(partido.equipoVisitante.tanteo) + " - " + str(
-            partido.equipoLocal.tanteo) + " " + partido.equipoLocal.nombre)
-        print ("Patido de PlayOff: " + str(partido.playOff))
+    
+            print ("    "+partido.equipoVisitante.nombre + " " + str(partido.equipoVisitante.tanteo) + " - " + str(partido.equipoLocal.tanteo) + " " + partido.equipoLocal.nombre)
+            print ("    Patido de PlayOff: " + str(partido.playOff))
 
         ## RECOGEMOS LAS ESTADISTICAS NORMALES  DE LOS JUGADORES DEL PARTIDO DE LA PAGINA DE BOXSCORE
         partido.equipoLocal = funcionesPartido.devolverStadisticasNormalesJugadores(partido.equipoLocal, boxScoreGame)

@@ -87,7 +87,7 @@ def crearJsonPartidosDiarios(year,url,numero):
 ## CREAMOS EL ARHCIVO JSON DONDE GUARDAREMOS LOS DATOS DE LOS PARTIDOS
 def crearTxtId(year):
     return open(
-        'E:/Programacion/pruebasMaven/NBAMongo/nuevosId.txt',
+        '/Users/formotion/tfg/java/archivos/actualizarJugadores.txt',
         'a')
 
 ## CREAMOS EL ARHCIVO JSON DONDE GUARDAREMOS LOS DATOS DE LOS PARTIDOS
@@ -155,7 +155,8 @@ def esPartidoPlayIn(titulo):
 def yearUbicacion(year):
     if year <2000:
         return 1
-    return 0
+    return 0
+
 def puntosNulos(puntos):
     if puntos is None:
         return 0
