@@ -152,6 +152,7 @@ for year in range(constantes.TEMPORADA_INICIAL, constantes.TEMPORADA_FINAL):
             listaTanteoLocal=[]
             
             for resultado in tanteoPartido:
+                #print(resultado)
                 dividir = resultado.split('-')
                 listaTanteoLocal.append(int(dividir[1])-int(dividir[0]))
             

@@ -631,18 +631,29 @@ def devolverTanteoPartido(pagina):
     marcador=[]
     for link in pagina.find_all('td'):
         particion = link.text
-
-        if ("12:00.0" not in particion and "Start" not in particion and "Jump" not in particion and "End" not in particion and "1st" not in particion and "2nd" not in particion and "3rd" not in particion and "4th" not in particion)\
+        
+        if '.0' in particion:
+            contador="A"
+            
+        if ("Official timeout" not in particion and "12:00.0" not in particion and "Start" not in particion and "Jump" not in particion and "End" not in particion and "1st" not in particion and "2nd" not in particion and "3rd" not in particion and "4th" not in particion)\
                 or (seguir == True)\
                 or("12:00.0" in save and "Start" not in particion and "Jump" not in particion and "End" not in particion and "1st" not in particion and "2nd" not in particion and "3rd" not in particion and "4th" not in particion):
             if contador == "A":
                 contador = "B"
             elif contador == "B":
+                if 'Official timeout' in particion:
+                    contador="C"
+                    seguir=True
                 contador = "C"
             elif contador == "C":
-                contador = "D"
+                if '.0' in particion:
+                    contador="B"
+                else:
+                    contador = "D"
             elif contador == "D":
-                marcador.append(particion)
+                #print(particion)
+                if len(particion) !=1:
+                    marcador.append(particion)
                 contador = "E"
             elif contador == "E":
                 contador = "F"

@@ -114,12 +114,13 @@ def escribirEnDocumento(archivo,texto):
 #   SI LOS MESE SON 10,11 O 12, DEVOLVEREMOS EL 2003
 #   EN CAMBIO SI EL MES ESTA ENTRE 1,2,3,4,5,6 O 7 DEVOLVERA UN A�O MAS, EN ESTE CASO 2004
 def devolverAnioCorrecto(year,mes):
-    # if year == 2019 and (mes == 9 or mes == 10):
-    #     return 2020
-    #
-    # if year == 2020:
-    #     return year
+    #if year == 2019 and (mes == 9 or mes == 10):
+    #    return 2020
+    
+    #if year == 2020:
+    #    return year
     # else:
+    
     if mes>9:
         return year
     else:
